@@ -8,18 +8,64 @@ class InstructionsContainer
   constructor(props) {
     super(props);
     this.state = {
-      // data: null
-    // }
+      // id: null,
+      step: null,
+      data: null
+    }
+    // this.setId = this.setId.bind(this);
+    this.getData= this.getData.bind(this);
+    this.chooseTile = this.chooseTile.bind(this);
   }
+
+
+  chooseTile(id){
+    this.setState({ step: id });
+  }
+
+  getData(){
+  	 fetch('/api/v1/favorite_things.json')
+  	  .then(response => {
+  	     if (response.ok) {
+  	       return response;
+  	     } else {
+  	       let errorMessage = `${response.status} (${response.statusText})`,
+  	           error = new Error(errorMessage);
+  	       throw(error);
+  	     }
+  	   })
+  	   .then(response => {
+  	     return response.json()
+  	   })
+  	   .then(json => {
+  	     this.setState({
+  	       data: json
+  	     })
+  	   })
+  	   .catch(error => console.error(`Error in fetch: ${error.message}`));
+  };
 
   // this.setSelectedStep = this.setSelectedStep.bind(this);
   // this.fetchData = this.fetchData.bind(this);
+  // setId(newId){
+  //   this.setState({ id: newId })
+  // }
 
   render(){
-    let supplies = this.props.data.supplies
-    let directions = this.props.data.directions
+    // console.log(this.state.data)
+    // let supplies = this.props.data.supplies
+    // let directions = this.props.data.directions
 
-    let items = supplies.map(supply => {
+    let activity;
+    let items;
+    let steps;
+
+    	    if (this.state.data !== null) {
+    	      let supplies = this.state.data.supplies
+    	      let directions = this.state.data.directions
+
+    	      activity = this.state.data.activity
+
+    items = supplies.map(supply => {
       return(
         <ItemTile
         item={supply.item}
@@ -29,17 +75,23 @@ class InstructionsContainer
       )
     })
 
-    let steps = directions.map(direction => {
+    steps = directions.map(direction => {
       let className;
+        if (direction.id === this.state.step) {
+          className = "selected"
+        }
 
-      return(
-        <StepTile
-          step={direction.step}
-          key={direction.id}
-          id={direction.id}
-        />
-      )
-    })
+        return(
+          <StepTile
+            step={direction.step}
+            key={direction.id}
+            id={direction.id}
+            setSelectedStep={this.chooseTile}
+            className={className}
+          />
+        )
+      })
+    }
 
     return(
       <div>
@@ -52,11 +104,12 @@ class InstructionsContainer
         <ol>
           {steps}
         </ol>
-        <FetchButton />
+        <FetchButton
+          getData={this.getData}
+        />
       </div>
     )
   }
 }
 
 export default InstructionsContainer
-;

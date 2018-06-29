@@ -7,7 +7,8 @@ const StepTile = props => {
   }
 
   return(
-    <li>{props.step}</li>
+    // <li>{props.step}</li>
+    <li className={props.className} onClick={handleClick}>{props.step}</li>
   )
 }
 
