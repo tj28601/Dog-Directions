@@ -8,11 +8,9 @@ class InstructionsContainer
   constructor(props) {
     super(props);
     this.state = {
-      // id: null,
       step: null,
       data: null
     }
-    // this.setId = this.setId.bind(this);
     this.getData= this.getData.bind(this);
     this.chooseTile = this.chooseTile.bind(this);
   }
@@ -44,17 +42,7 @@ class InstructionsContainer
   	   .catch(error => console.error(`Error in fetch: ${error.message}`));
   };
 
-  // this.setSelectedStep = this.setSelectedStep.bind(this);
-  // this.fetchData = this.fetchData.bind(this);
-  // setId(newId){
-  //   this.setState({ id: newId })
-  // }
-
   render(){
-    // console.log(this.state.data)
-    // let supplies = this.props.data.supplies
-    // let directions = this.props.data.directions
-
     let activity;
     let items;
     let steps;

@@ -7,7 +7,6 @@ const FetchButton = props => {
 
   return(
     <button onClick={handleClick}>Get Favorite Thing</button>
-    // <button onClick={props.fetchData}>Get Favorite Thing</button>
   )
 }
 
